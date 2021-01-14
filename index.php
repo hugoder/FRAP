@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Login V15</title>
+	<title>FRAP</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -58,7 +58,7 @@
 					
 
 						<div class="container-login100-form-btn">
-							<button class="login100-form-btn" name="submit">
+							<button class="login100-form-btn" name="submit" onclick="location.href=('login.php')">
 								C'est parti !
 							</button>
 						</div>

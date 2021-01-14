@@ -21,7 +21,7 @@ if (isset($_POST['submit']))
         {
             echo "Connexion effectué";
             $_SESSION["statut"] = "admin";
-            $_SESSION["mail"] = $mail;
+            $_SESSION["mail"] = $mail;  
             
         }
         else

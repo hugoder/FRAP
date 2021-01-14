@@ -20,7 +20,7 @@ if (isset($_POST['submit']))
         if($password == $data[0]["password"])
         {
             echo "Connexion effectué";
-            $_SESSION["id"] = $id;
+            
         }
         else
         {
