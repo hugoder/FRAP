@@ -1,5 +1,7 @@
 <?php 
 
+session_start();
+
 if (isset($_POST['submit']))
 {
     $mail = $_POST['mail'];
@@ -18,7 +20,9 @@ if (isset($_POST['submit']))
         if($password == $data[0]["password"])
         {
             echo "Connexion effectué";
+            $_SESSION["statut"] = "admin";
             $_SESSION["mail"] = $mail;
+            
         }
         else
         {

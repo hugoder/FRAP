@@ -1,4 +1,6 @@
-
+<?php 
+	session_start();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -64,7 +66,7 @@
 				</form>
 
 				<div class="container-login101-form-btn">
-						<button class="login101-form-btn" name="submit" onclick="window.open('admin.php')">
+						<button class="login101-form-btn" name="submit" onclick="location.href=('admin.php')">
 							Accès à l'espace admin
 						</button>
 					</div>

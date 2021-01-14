@@ -35,52 +35,20 @@
 
 	if (isset($_SESSION['mail']))
 	{
-		echo "Bienvenue, vous êtes connecté avec : " . $_SESSION["mail"];	
-		?>
-		<div class="limiter">
+        ?>
+        <div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<div class="login100-form-title" style="background-image: url(images/unnamed.jpg);">
+				<div class="login100-form-title" style="background-image: url(images/pompier.jpg);">
 					<span class="login100-form-title-1">
-						Espace Administrateur
-					</span>
-				</div>
-						<div class="container-login101-form-btn">
-							<button class="login100-form-btn" name="submit" onclick="location.href=('form_ajout.php')">
-								Créer une intervention
-							</button>
-						</div>
-
-						<div class="container-login101-form-btn">
-							<button class="login101-form-btn" name="submit" onclick="location.href=('suppr.php')">
-								Supprimer une intervention
-							</button>
-						</div>
-
-				</form>
-
-			</div>
-		</div>
-	</div>
-
-		<?php
-	}
-	else
-	{
-		?>
-		<div class="limiter">
-		<div class="container-login100">
-			<div class="wrap-login100">
-				<div class="login100-form-title" style="background-image: url(images/unnamed.jpg);">
-					<span class="login100-form-title-1">
-						Espace Administrateur
+						Créer une intervention
 					</span>
 				</div>
 
-				<form class="login100-form validate-form" method="POST" action="loginadmin.php">
-					<div class="wrap-input100 validate-input m-b-26" data-validate="Le mail est necessaire">
-						<span class="label-input100">Email</span>
-						<input class="input100" type="text" name="mail" placeholder="Entrer le mail">
+				<form class="login100-form validate-form" method="POST" action="ajout.php">
+					<div class="wrap-input100 validate-input m-b-26" data-validate="Assigner un numéro d'intervention est necessaire">
+						<span class="label-input100">ID</span>
+						<input class="input100" type="number" name="id" placeholder="Entrer le numéro d'intervention">
 						<span class="focus-input100"></span>
 					</div>
 
@@ -90,11 +58,17 @@
 						<span class="focus-input100"></span>
 					</div>
 
+					<div class="wrap-input100 validate-input m-b-18" data-validate = "L'addresse est necessaire">
+						<span class="label-input100">Addresse</span>
+						<input class="input100" type="text" name="address" placeholder="Entrer l'addresse">
+						<span class="focus-input100"></span>
+					</div>
+
 					
 
 						<div class="container-login100-form-btn">
 							<button class="login100-form-btn" name="submit">
-								Connexion
+								Créer
 							</button>
 						</div>
 
@@ -103,8 +77,21 @@
 			</div>
 		</div>
 	</div>
+		
+		<?php
+	}
+	else
+	{
+        echo "Vous n'avez pas les droits necessaires !"
+        ?>
 
-	<?php
+        <div class="container-login101-form-btn">
+		<button class="login101-form-btn" name="submit" onclick="location.href=('index.php')">
+		OUST
+		</button>
+        </div>
+        
+        <?php
 	}
 
 	?>
@@ -130,3 +117,5 @@
 
 </body>
 </html>
+
+?>
