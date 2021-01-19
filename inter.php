@@ -39,13 +39,13 @@ session_start();
             align-items: center;
 
             height: 100%;
-            width: 15%;
+            width: 14%;
 
             position: fixed;
             z-index: 1;
             top: 0;
             left: 0;
-            background-color: #E68401;
+            background-color: #E57B4A;
             overflow-x: hidden;
         }
 
@@ -77,7 +77,7 @@ session_start();
             }
         }
     </style>
-    <title>F R A P</title>
+    <title>F R A P - Assistant Program</title>
 </head>
 
 <body>
@@ -86,14 +86,7 @@ session_start();
     <!-- Cette DIV affichera le menu -->
     <div class="sidenav">
         <a href="#">About</a>
-        <a href="#">Services
-
-            <script type="text/javascript">
-                var address = <?php echo json_encode($_SESSION['address']); ?>;
-                document.write(address)
-            </script>
-
-        </a>
+        <a href="#">Services</a>
         <a href="#">Clients</a>
         <a href="#">Contact</a>
     </div>
