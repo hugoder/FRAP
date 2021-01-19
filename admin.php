@@ -57,6 +57,12 @@
 							</button>
 						</div>
 
+						<div class="container-login101-form-btn">
+							<button class="login101-form-btn" name="submit" onclick="location.href=('index.php')">
+								Retour
+							</button>
+						</div>
+
 				</form>
 
 			</div>

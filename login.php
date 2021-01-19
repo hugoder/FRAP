@@ -4,13 +4,13 @@ session_start();
 
 if (isset($_POST['submit']))
 {
-    $id = $_POST['id'];
+    $num = $_POST['num'];
     $password = $_POST['pass'];
 
 
-    $db = new PDO('mysql:host=localhost;dbname=frap','root','');
+    $db = new PDO('mysql:host=localhost;dbname=projetfrap','root','');
 
-    $sql = "SELECT * FROM intervention where id ='$id' ";
+    $sql = "SELECT * FROM intervention where num ='$num' ";
     $result = $db->prepare($sql);
     $result->execute();
 
@@ -20,11 +20,15 @@ if (isset($_POST['submit']))
         if($password == $data[0]["password"])
         {
             echo "Connexion effectué";
-            
+            $_SESSION['address'] = $data[0]["adress"];
+            $_SESSION['code'] = $data[0]["code"];
+            $_SESSION['ville'] = $data[0]["ville"];
+            header("Location:inter.php");
         }
         else
         {
-            echo "Mauvais MDP";         
+            echo "Mauvais MDP"; 
+           
             
         }
     }

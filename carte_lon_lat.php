@@ -1,3 +1,5 @@
+
+  
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,7 +10,6 @@
 			#detailsMap{
 				height: 400px;
 			}
-
         </style>
         <title>Carte</title>
     </head>
@@ -41,11 +42,9 @@
     </div>
     <button>Valider</button>
 </form>
-
 <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
 <script type="text/javascript">
 	let mymap, marqueur // Variable qui permettra de stocker la carte et marqueur
-
 	// On attend que le DOM soit chargé
 	window.onload = () => {
 		// Nous initialisons la carte et nous la centrons sur Paris
@@ -60,8 +59,6 @@
 		mymap.on("click", mapClickListen)
 		document.querySelector("#ville").addEventListener("blur", getCity)
 	}
-
-
 	/**
 	 * Cette fonction se déclenche au clic, crée un marqueur et remplit les champs latitude et longitude
 	 * @param {event} e 
@@ -69,10 +66,8 @@
 	function mapClickListen(e) {
 		// On récupère les coordonnées du clic
 		let pos = e.latlng
-
 		// On crée un marqueur
 		addMarker(pos)
-
 		// On affiche les coordonnées dans le formulaire
 		document.querySelector("#lat").value=pos.lat
 		document.querySelector("#lon").value=pos.lng
@@ -108,7 +103,7 @@
 	function getCity(){
 		//On fabrique l'adresse
 		let adresse = document.querySelector("#adresse").value + ", " + document.querySelector("#cp").value + " " + document.querySelector("#ville").value
-		
+		document.write(adresse.lon)
 		// On initialise une requête Ajax
 		const xmlhttp = new XMLHttpRequest 
 		
@@ -145,9 +140,19 @@
 	}
 	
 	
-
 </script>
+
+<a href="#"><h1>OEEEEEEEEEEEEEEEEEEEEE
+
+            <script type="text/javascript">
+	
+			document.write(adresse.status)
+			
+            </script>
+
+            </h1></a>
 	
 		
     </body>
 </html>
+

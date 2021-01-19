@@ -47,8 +47,8 @@
 
 				<form class="login100-form validate-form" method="POST" action="ajout.php">
 					<div class="wrap-input100 validate-input m-b-26" data-validate="Assigner un numéro d'intervention est necessaire">
-						<span class="label-input100">ID</span>
-						<input class="input100" type="number" name="id" placeholder="Entrer le numéro d'intervention">
+						<span class="label-input100">Numéro</span>
+						<input class="input100" type="number" name="num" placeholder="Entrer le numéro d'intervention">
 						<span class="focus-input100"></span>
 					</div>
 
@@ -61,6 +61,18 @@
 					<div class="wrap-input100 validate-input m-b-18" data-validate = "L'addresse est necessaire">
 						<span class="label-input100">Addresse</span>
 						<input class="input100" type="text" name="address" placeholder="Entrer l'addresse">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-18" data-validate = "Le code postal est necessaire">
+						<span class="label-input100">Code Postal</span>
+						<input class="input100" type="number" name="code" placeholder="Entrer le code postal">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-18" data-validate = "La ville est necessaire">
+						<span class="label-input100">Ville</span>
+						<input class="input100" type="text" name="ville" placeholder="Entrer la ville" >
 						<span class="focus-input100"></span>
 					</div>
 

@@ -4,20 +4,24 @@ session_start();
 
 if (isset($_POST['submit']))
 {
-    $id = $_POST['id'];
+    $num = $_POST['num'];
     $password = $_POST['pass'];
     $address = $_POST['address'];
+    $code = $_POST['code'];
+    $ville = $_POST['ville'];
 
 
 
-    $db = new PDO('mysql:host=localhost;dbname=frap','root','');
+    $db = new PDO('mysql:host=localhost;dbname=projetfrap','root','');
 
-    $sql = "INSERT INTO intervention(id,password,address)
-            VALUES (NULL, '$password' , '$address'); ";
+    $sql = "INSERT INTO intervention(id,num,password,adress,code,ville)
+            VALUES (NULL,'$num', '$password' , '$address','$code' , '$ville'); ";
     $result = $db->prepare($sql);
     $result->execute();
 
-    echo $sql;
+    header("Location:admin.php");
+
+   
 
 
 

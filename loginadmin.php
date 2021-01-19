@@ -8,7 +8,7 @@ if (isset($_POST['submit']))
     $password = $_POST['pass'];
 
 
-    $db = new PDO('mysql:host=localhost;dbname=frap','root','');
+    $db = new PDO('mysql:host=localhost;dbname=projetfrap','root','');
 
     $sql = "SELECT * FROM admin where mail ='$mail' ";
     $result = $db->prepare($sql);
@@ -21,7 +21,8 @@ if (isset($_POST['submit']))
         {
             echo "Connexion effectué";
             $_SESSION["statut"] = "admin";
-            $_SESSION["mail"] = $mail;  
+            $_SESSION["mail"] = $mail; 
+            header("Location:admin.php"); 
             
         }
         else
