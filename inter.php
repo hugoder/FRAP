@@ -1,14 +1,5 @@
 <?php
 session_start();
-
-$db = new PDO('mysql:host=localhost;dbname=projetfrap', 'root', '');
-$sql = "SELECT * FROM plans ";
-$result = $db->prepare($sql);
-$result->execute();
-$data = $result->fetchAll();
-$_SESSION['latitude'] = $data[0]["latitude"];
-$_SESSION['longitude'] = $data[0]["longitude"];
-$db = null;
 ?>
 
 <!DOCTYPE html>
@@ -20,19 +11,6 @@ $db = null;
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin="" />
     <link rel="stylesheet" type="text/css" href="css/inter.css">
 
-
-    <script type="text/javascript">
-        function showmenu() {
-            if (document.getElementById)
-                document.getElementById("menu").style.visibility = 'visible';
-        }
-
-        function closemenu() {
-            if (document.getElementById)
-                document.getElementById("menu").style.visibility = 'hidden';
-        }
-    </script>
-
     <title>F R A P - Assistant Program</title>
 </head>
 
@@ -42,9 +20,9 @@ $db = null;
     <!-- Cette DIV affichera le menu -->
     <div class="sidenav">
         <a href="#" onClick="showmenu();return(false)">Poser un Vehicule</a>
-        <a href="#">Services</a>
-        <a href="#">Clients</a>
-        <a href="#">Contact</a>
+        <a href="#">Les Fiches</a>
+        <a href="#" onClick="showmenu1();return(false)">Hydrants</a>
+        <a href="#" onClick="showmenu2();return(false)">Les Fiches</a>
     </div>
 
 
@@ -59,6 +37,32 @@ $db = null;
         </div>
     </div>
 
+    <div class="menuhydrant" id="menu1">
+        <a href='#' onClick="showhydrant();">Montrer tout les hydrants</a>
+        <a href='#' onClick="hydrantA();">Réseau A</a>
+        <a href='#' onClick="hydrantB();">Réseau B</a>
+        <a href='#' onClick="hydrantC();">Réseau C</a>
+        <a href='#' onClick="tejhydrant();">Ne plus montrer</a>
+
+        <div class="share-button">
+            <button onClick="closemenu1();return(false)">Fermer</button>
+        </div>
+
+    </div>
+
+    <div class="menufiche" id="menu2">
+        <a>1</a>
+        <a>1</a>
+        <a>1</a>
+        <a>1</a>
+        <a>1</a>
+        <a>1</a>
+        <a>1</a>
+
+
+
+    </div>
+
     <div class="todefine">
         <a href=''><img src='images/help.png' alt=''></a>
     </div>
@@ -66,7 +70,7 @@ $db = null;
     <!-- Cette DIV affichera la carte -->
     <div id="detailsmap"></div>
 
-
+<!-------------------------------------- DEBUT JS ------------------------------------------------>
 
 
     <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
@@ -77,13 +81,26 @@ $db = null;
 
         window.onload = () => { // Fonction principale, nous initialisons la carte et nous la centrons sur Paris
 
-
+            console.log("yoyo");
             mymap = L.map('detailsmap').setView([48.852969, 2.349903], 11)
             L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
                 attribution: 'Carte fournie par la caserne de Villier le Bel',
                 minZoom: 1,
                 maxZoom: 20
             }).addTo(mymap)
+
+            lgHydrant = new L.LayerGroup();
+            mymap.addLayer(lgHydrant);
+
+            lgHydrantA = new L.LayerGroup();
+            mymap.addLayer(lgHydrantA);
+
+            lgHydrantB = new L.LayerGroup();
+            mymap.addLayer(lgHydrantB);
+
+            lgHydrantC = new L.LayerGroup();
+            mymap.addLayer(lgHydrantC);
+
 
 
             // On place ensuite la vue sur l'adresse de l'intervention
@@ -105,8 +122,8 @@ $db = null;
                         //On récupère la réponse
                         let response = JSON.parse(xmlhttp.response)
 
-                        let lat = response[0]["lat"]
-                        let lon = response[0]["lon"]
+                        lat = response[0]["lat"]
+                        lon = response[0]["lon"]
 
 
 
@@ -114,9 +131,12 @@ $db = null;
 
 
                         addMarker(pos)
+                        console.log(distance(lat, lon));
 
                         //On met à jour le zoom de la carte
                         mymap.setView(pos, 17)
+
+
                     }
                 }
             }
@@ -129,9 +149,12 @@ $db = null;
             //On envoie la requête
             xmlhttp.send()
 
+            
+
+////////////////////////////// GEOLOCALISATION ////////////////////////////////////////
 
             navigator.geolocation.getCurrentPosition(success, error);
-            //console.log(distance(lat,lon));
+
 
             function success(pos) {
                 {
@@ -152,35 +175,199 @@ $db = null;
                 console.log("ca marche PO");
             }
 
-            /*function distance(lat, lon) {
+//////////////////////// Fonction distance (fiche) ///////////////////////////////////////
 
-                var latitude = <?php echo json_encode($_SESSION['latitude']); ?>;
-                var longitude = <?php echo json_encode($_SESSION['longitude']); ?>;
-                var R = 6371; // Radius of the earth in km
-                var dLat = deg2rad(latitude - lat); // deg2rad below
-                var dLon = deg2rad(longitude - lon);
-                var a =
-                    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                    Math.cos(deg2rad(latitude)) * Math.cos(deg2rad(lat)) *
-                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                var d = R * c; // Distance in km
-                return d;
+            function distance(lat, lon) {
+            let xmlhttp2 = new XMLHttpRequest();
+            var tableaudis = [];
+            var i=0;
+            xmlhttp2.onreadystatechange = () => {
 
+                if (xmlhttp2.readyState == 4) {
+
+
+                    if (xmlhttp2.status == 200) {
+                        let donnees = JSON.parse(xmlhttp2.responseText)
+                        Object.entries(donnees.dista).forEach(fiches => {
+                            var latitude = fiches[1].latitude;
+                            var longitude = fiches[1].longitude;
+                            i=i+1;
+                            var R = 6371; // Radius of the earth in km
+                            var dLat = deg2rad(latitude - lat); // deg2rad below
+                            var dLon = deg2rad(longitude - lon);
+                            var a =
+                                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                                Math.cos(deg2rad(latitude)) * Math.cos(deg2rad(lat)) *
+                                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                            tableaudis[i] = R * c; // Distance in km
+                            console.log(tableaudis[i]);
+                            return tableaudis[i] ;
+
+                        });
+
+                    }
+                }
+            }
+            xmlhttp2.open("GET", "plans.php");
+            xmlhttp2.send(null);
+
+        }
+
+
+        function deg2rad(deg) {
+            return deg * (Math.PI / 180)
+        }
+
+
+        }
+
+///////////////////////// FONCTIONS HYDRANTS //////////////////////////////////////////////////////////////////////////
+
+
+        function showhydrant() {
+
+
+            let xmlhttptest = new XMLHttpRequest();
+
+            xmlhttptest.onreadystatechange = () => {
+
+                if (xmlhttptest.readyState == 4) {
+
+                    if (xmlhttptest.status == 200) {
+                        let donnees = JSON.parse(xmlhttptest.responseText)
+
+
+                        Object.entries(donnees.hydran).forEach(hydrans => {
+                            if (hydrans[1].nom == "disponible") {
+
+                                if (hydrans[1].reseau == 0) {
+                                    var customIconDispo = L.icon({
+                                        iconUrl: 'dispo.png',
+                                        iconSize: [42, 42], // taille de l'icone
+                                        iconAnchor: [32, 64], // point de l'icone qui correspondra à la position du marker
+                                        popupAnchor: [-3, -76] // point depuis lequel la popup doit s'ouvrir relativement à l'iconAnchor
+                                    });
+
+                                    marker = L.marker([hydrans[1].lat, hydrans[1].lon], {
+                                        icon: customIconDispo
+                                    }).addTo(lgHydrant)
+                                    marker.bindPopup(hydrans[1].reseau)
+
+                                } else if (hydrans[1].reseau == 1) {
+                                    var customIconDispo = L.icon({
+                                        iconUrl: 'dispo.png',
+                                        iconSize: [42, 42], // taille de l'icone
+                                        iconAnchor: [32, 64], // point de l'icone qui correspondra à la position du marker
+                                        popupAnchor: [-3, -76] // point depuis lequel la popup doit s'ouvrir relativement à l'iconAnchor
+                                    });
+
+                                    marker = L.marker([hydrans[1].lat, hydrans[1].lon], {
+                                        icon: customIconDispo
+                                    }).addTo(lgHydrantA)
+                                    marker.bindPopup(hydrans[1].reseau)
+
+                                } else if (hydrans[1].reseau == 2) {
+                                    var customIconDispo = L.icon({
+                                        iconUrl: 'dispo.png',
+                                        iconSize: [42, 42], // taille de l'icone
+                                        iconAnchor: [32, 64], // point de l'icone qui correspondra à la position du marker
+                                        popupAnchor: [-3, -76] // point depuis lequel la popup doit s'ouvrir relativement à l'iconAnchor
+                                    });
+
+                                    marker = L.marker([hydrans[1].lat, hydrans[1].lon], {
+                                        icon: customIconDispo
+                                    }).addTo(lgHydrantB)
+                                    marker.bindPopup(hydrans[1].reseau)
+
+                                } else if (hydrans[1].reseau == 3) {
+                                    var customIconDispo = L.icon({
+                                        iconUrl: 'dispo.png',
+                                        iconSize: [42, 42], // taille de l'icone
+                                        iconAnchor: [32, 64], // point de l'icone qui correspondra à la position du marker
+                                        popupAnchor: [-3, -76] // point depuis lequel la popup doit s'ouvrir relativement à l'iconAnchor
+                                    });
+
+                                    marker = L.marker([hydrans[1].lat, hydrans[1].lon], {
+                                        icon: customIconDispo
+                                    }).addTo(lgHydrantC)
+                                    marker.bindPopup(hydrans[1].reseau)
+
+                                }
+
+
+                            } else if (hydrans[1].nom == "non disponible") {
+                                if (hydrans[1].reseau == 0) {
+                                    var customIconNonDispo = L.icon({
+                                        iconUrl: 'nondispo.png',
+                                        iconSize: [42, 42], // taille de l'icone
+                                        iconAnchor: [32, 64], // point de l'icone qui correspondra à la position du marker
+                                        popupAnchor: [-3, -76] // point depuis lequel la popup doit s'ouvrir relativement à l'iconAnchor
+                                    });
+
+                                    marker = L.marker([hydrans[1].lat, hydrans[1].lon], {
+                                        icon: customIconNonDispo
+                                    }).addTo(lgHydrant)
+                                    marker.bindPopup(hydrans[1].nom)
+                                }
+
+                            }
+
+
+                        })
+                    } else {
+                        console.log(xmlhttptest.statusText);
+                    }
+                }
             }
 
-            function deg2rad(deg) {
-                return deg * (Math.PI / 180)
-            }*/
+            xmlhttptest.open("GET", "liste.php");
+
+            xmlhttptest.send(null);
 
 
 
         }
 
 
+        function hydrantA() {
+
+            lgHydrant.clearLayers();
+            lgHydrantB.clearLayers();
+            lgHydrantC.clearLayers();
+
+        }
+
+        function hydrantB() {
+
+            lgHydrant.clearLayers();
+            lgHydrantA.clearLayers();
+            lgHydrantC.clearLayers();
+
+        }
+
+        function hydrantC() {
+
+            lgHydrant.clearLayers();
+            lgHydrantB.clearLayers();
+            lgHydrantA.clearLayers();
+
+        }
+
+
+        function tejhydrant() {
+            lgHydrant.clearLayers();
+            lgHydrantA.clearLayers();
+            lgHydrantB.clearLayers();
+            lgHydrantC.clearLayers();
+        }
+
+
+
 
         /////////////////////////// LES FONCTIONS LIEES AUX MARQUEURS /////////////////////////////////////////////////////////////////////////////////////////
 
+        ///////////////////////// Marqueurs classique //////////////////////////////////////////////
 
         function addMarker(pos) {
             // On vérifie si un marqueur existe
@@ -218,6 +405,7 @@ $db = null;
         }
 
 
+
         function addMarkerDrag(pos) {
 
             var greenIcon = L.icon({
@@ -240,6 +428,8 @@ $db = null;
             marqueur.addTo(mymap)
 
         }
+
+        ////////////////////// Marqueurs Camions ///////////////////////////////////////////////////////////////////////
 
         function addMarkerEPAS() {
 
@@ -467,11 +657,7 @@ $db = null;
                         
                     <form method="POST" action="#"><input type="text" name="rowText" id="rowText" />
                     <input type="button" name="submit" value="Ajouter" onclick="ajoutmission(document.getElementById('rowText').value);"/>
-                    </form>
-                        
-                        
-                         
-                    
+                    </form>      
                     
                     
                     <?php
@@ -496,23 +682,17 @@ $db = null;
             marqueur.addTo(mymap)
 
         }
-        /// PROBLEMES : loop de l'ajout de mission dans le popup
-        /// Popup pas compris
 
-        function ajoutmission(value) {
-            console.log(value);
 
-        }
+
+
+        ////////////////// Cimetière de fonctions //////////////////////////////////////////////
 
 
 
 
 
 
-
-        /*idée : menu click souris
-                 mission assigné aux camions : envoyé sms à un 06
-               06 03 21 46 96*/
 
         /*function mapClickListen(e) {
             // On récupère les coordonnées du clic
@@ -525,6 +705,50 @@ $db = null;
             document.querySelector("#lat").value = pos.lat
             document.querySelector("#lon").value = pos.lng
         }*/
+    </script>
+
+
+
+    <script type="text/javascript">
+
+        ////////////////// Fonctions pour menus ///////////////////////////////////////////////
+
+        function showmenu() {
+            if (document.getElementById)
+                document.getElementById("menu").style.visibility = 'visible';
+        }
+
+        function closemenu() {
+            if (document.getElementById)
+                document.getElementById("menu").style.visibility = 'hidden';
+        }
+
+        function showmenu1() {
+            if (document.getElementById)
+                document.getElementById("menu1").style.visibility = 'visible';
+        }
+
+        function closemenu1() {
+            if (document.getElementById)
+                document.getElementById("menu1").style.visibility = 'hidden';
+        }
+
+        function showmenu2() {
+            if (document.getElementById)
+                document.getElementById("menu2").style.visibility = 'visible';
+        }
+
+        function closemenu2() {
+            if (document.getElementById)
+                document.getElementById("menu2").style.visibility = 'hidden';
+        }
+
+        /*idée : menu click souris
+                 mission assigné aux camions : envoyé sms à un 06
+                 06 03 21 46 96
+
+          A Faire : Ajout mission popup
+                    Finir menu fiche*/
     </script>
 
 
