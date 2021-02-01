@@ -23,7 +23,7 @@ if(isset($_GET['id'])){
         header("Content-Length: ".filesize($file));
         readfile($file);
         exit;
-
+        
 }
 
 ob_end_flush();
