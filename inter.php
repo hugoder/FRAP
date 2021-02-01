@@ -11,7 +11,24 @@ session_start();
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin="" />
     <link rel="stylesheet" type="text/css" href="css/inter.css">
 
+
     <title>F R A P - Assistant Program</title>
+    <script src='https://code.jquery.com/jquery-2.1.3.min.js'></script>
+    <script type="text/javascript">
+        function formSubmit() {
+            $.ajax({
+                type: 'POST',
+                url: 'insert.php',
+                data: $('#frmBox').serialize(),
+                success: function(response) {
+                    $('#success').html(response);
+                }
+            });
+            var form = document.getElementById('frmBox').reset();
+            return false;
+        }
+    </script>
+
 </head>
 
 <body>
@@ -19,10 +36,9 @@ session_start();
 
     <!-- Cette DIV affichera le menu -->
     <div class="sidenav">
-        <a href="#" onClick="showmenu();return(false)">Poser un Vehicule</a>
-        <a href="#">Les Fiches</a>
-        <a href="#" onClick="showmenu1();return(false)">Hydrants</a>
-        <a href="#" onClick="showmenu2();return(false)">Les Fiches</a>
+        <a href="#" onClick="closemenu3();showmenu();return(false)">Poser un Vehicule<br></br><img src='images/firetruck.png'></a>
+        <a href="#" onClick="closemenu3();showmenu1();return(false)">Informations Hydrants<br></br><img src='images/hydrant.png'></a>
+        <a href="#" onClick="showmenu2();return(false)">Plans des Résidences<br></br><img src='images/plans.png'></a>
     </div>
 
 
@@ -38,50 +54,59 @@ session_start();
     </div>
 
     <div class="menuhydrant" id="menu1">
-        <a href='#' onClick="showhydrant();">Montrer tout les hydrants</a>
-        <a href='#' onClick="hydrantA();">Réseau A</a>
-        <a href='#' onClick="hydrantB();">Réseau B</a>
-        <a href='#' onClick="hydrantC();">Réseau C</a>
-        <a href='#' onClick="tejhydrant();">Ne plus montrer</a>
+        <x>Menu Hydrant</x>
+        <c>
+            <b>
+                <a href='#' onClick="showhydrant();">Montrer tous les hydrants</a>
 
+                <a href='#' onClick="tejhydrant();">Ne plus montrer</a>
+
+            </b>
+            <b>
+                <a href='#' onClick="hydrantA();">Réseau A</a>
+                <a href='#' onClick="hydrantB();">Réseau B</a>
+                <a href='#' onClick="hydrantC();">Réseau C</a>
+
+
+            </b>
+        </c>
         <div class="share-button">
             <button onClick="closemenu1();return(false)">Fermer</button>
         </div>
-
     </div>
 
-    <div class="menufiche" id="menu2">
-        <a>1</a>
-        <a>1</a>
-        <a>1</a>
-        <a>1</a>
-        <a>1</a>
-        <a>1</a>
-        <a>1</a>
 
 
 
-    </div>
 
     <div class="todefine">
-        <a href=''><img src='images/help.png' alt=''></a>
+        <a href='#' onClick="showmenu3();return(false)"><img src='images/help2.png' alt=''></a>
+    </div>
+
+    <div class="info" id="menuinfo">
+        <a>Numéro d'intervention : <?php echo $_SESSION["num"];  ?></a>
+        <a>Adresse : <?php echo $_SESSION["address"] ?> </a>
+        <a>Code Postal : <?php echo $_SESSION["code"] ?> </a>
+        <a>Ville : <?php echo $_SESSION["ville"] ?> </a>
+
     </div>
 
     <!-- Cette DIV affichera la carte -->
     <div id="detailsmap"></div>
 
-<!-------------------------------------- DEBUT JS ------------------------------------------------>
+    <!-------------------------------------- DEBUT JS ------------------------------------------------>
 
 
     <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+
     <script type="text/javascript">
         let mymap, marqueur // Variable qui permettra de stocker la carte et marqueur
 
 
         window.onload = () => { // Fonction principale, nous initialisons la carte et nous la centrons sur Paris
 
-            console.log("yoyo");
+
             mymap = L.map('detailsmap').setView([48.852969, 2.349903], 11)
             L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
                 attribution: 'Carte fournie par la caserne de Villier le Bel',
@@ -100,6 +125,9 @@ session_start();
 
             lgHydrantC = new L.LayerGroup();
             mymap.addLayer(lgHydrantC);
+
+
+
 
 
 
@@ -131,7 +159,7 @@ session_start();
 
 
                         addMarker(pos)
-                        console.log(distance(lat, lon));
+
 
                         //On met à jour le zoom de la carte
                         mymap.setView(pos, 17)
@@ -149,9 +177,9 @@ session_start();
             //On envoie la requête
             xmlhttp.send()
 
-            
 
-////////////////////////////// GEOLOCALISATION ////////////////////////////////////////
+
+            ////////////////////////////// GEOLOCALISATION ////////////////////////////////////////
 
             navigator.geolocation.getCurrentPosition(success, error);
 
@@ -175,12 +203,12 @@ session_start();
                 console.log("ca marche PO");
             }
 
-//////////////////////// Fonction distance (fiche) ///////////////////////////////////////
+            //////////////////////// Fonction distance (fiche) ///////////////////////////////////////
 
-            function distance(lat, lon) {
+            /*function distance(lat,lon,fichelat,fichelon) {
             let xmlhttp2 = new XMLHttpRequest();
-            var tableaudis = [];
-            var i=0;
+            
+            
             xmlhttp2.onreadystatechange = () => {
 
                 if (xmlhttp2.readyState == 4) {
@@ -188,23 +216,20 @@ session_start();
 
                     if (xmlhttp2.status == 200) {
                         let donnees = JSON.parse(xmlhttp2.responseText)
-                        Object.entries(donnees.dista).forEach(fiches => {
-                            var latitude = fiches[1].latitude;
-                            var longitude = fiches[1].longitude;
-                            i=i+1;
+                        
                             var R = 6371; // Radius of the earth in km
-                            var dLat = deg2rad(latitude - lat); // deg2rad below
-                            var dLon = deg2rad(longitude - lon);
+                            var dLat = deg2rad(fichelat - lat); // deg2rad below
+                            var dLon = deg2rad(fichelon - lon);
                             var a =
                                 Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                                Math.cos(deg2rad(latitude)) * Math.cos(deg2rad(lat)) *
+                                Math.cos(deg2rad(fichelat)) * Math.cos(deg2rad(lat)) *
                                 Math.sin(dLon / 2) * Math.sin(dLon / 2);
                             var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                            tableaudis[i] = R * c; // Distance in km
-                            console.log(tableaudis[i]);
-                            return tableaudis[i] ;
+                            var d = R * c; // Distance in km
+                            console.log(d);
+                            return d;
 
-                        });
+                        
 
                     }
                 }
@@ -217,12 +242,50 @@ session_start();
 
         function deg2rad(deg) {
             return deg * (Math.PI / 180)
-        }
+        }*/
 
 
         }
+        ///////////////////////////FONCTIONS FICHES/////////////////////////////////////////////////////////////////////////////////////////
+        /*function showFiche() {
+            let xmlhttptry = new XMLHttpRequest();
 
-///////////////////////// FONCTIONS HYDRANTS //////////////////////////////////////////////////////////////////////////
+            xmlhttptry.onreadystatechange = () => {
+
+                if (xmlhttptry.readyState == 4) {
+
+                    if (xmlhttptry.status == 200) {
+                        let donnees = JSON.parse(xmlhttptry.responseText)
+
+
+                        Object.entries(donnees.fiche).forEach(fiches => {
+                            var customIconDispo = L.icon({
+                                iconUrl: 'dispo.png',
+                                iconSize: [42, 42], // taille de l'icone
+                                iconAnchor: [32, 64], // point de l'icone qui correspondra à la position du marker
+                                popupAnchor: [-3, -76] // point depuis lequel la popup doit s'ouvrir relativement à l'iconAnchor
+                            });
+
+                            marker = L.marker([fiches[1].latitude, fiches[1].longitude], {
+                                icon: customIconDispo
+                            }).addTo(mymap)
+                            marker.bindPopup(hydrans[1].nom)
+                            console.log('testfiche');
+
+
+                        })
+                    } else {
+                        console.log(xmlhttptry.statusText);
+                    }
+                }
+            }
+
+            xmlhttptry.open("GET", "fiche.php");
+
+            xmlhttptry.send(null);
+
+        }*/
+        ///////////////////////// FONCTIONS HYDRANTS //////////////////////////////////////////////////////////////////////////
 
 
         function showhydrant() {
@@ -297,7 +360,7 @@ session_start();
 
 
                             } else if (hydrans[1].nom == "non disponible") {
-                                if (hydrans[1].reseau == 0) {
+                                if (hydrans[1].reseau == 2) {
                                     var customIconNonDispo = L.icon({
                                         iconUrl: 'nondispo.png',
                                         iconSize: [42, 42], // taille de l'icone
@@ -444,6 +507,7 @@ session_start();
                 //popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor // onclick="alert('Mission ajoutée')"
             });
 
+
             marqueur = L.marker(pos, {
                 draggable: true,
                 icon: EPASIcon
@@ -454,6 +518,7 @@ session_start();
                     <?php
                     $db = new PDO('mysql:host=localhost;dbname=projetfrap', 'root', '');
                     $result = $db->query('SELECT * FROM missionsepas');
+
 
                     echo '<center><div class="liste"><table>';
                     echo '<tr>';
@@ -471,21 +536,54 @@ session_start();
                     echo '</table></div></center>';
 
 
-                    echo '<input type="text" id="rowText" />';
+                    //echo '<input type="text" id="rowText" />';
+                    //<input type="button" value="Ajouter" onclick="ajoutmission(document.getElementById('rowText').value);" />
+
+                    echo '<form  action="insert.php" method="post" id="frmBox" onsubmit="return formSubmit();">';
+                    echo '<p>';
+                    echo '<input type="text" name="mission" id="mission">';
+                    echo '</p>';
+
+                    echo '<input type="submit" name="submit" value="Submit">';
+                    echo '<p id="success"></p>';
+                    echo '</form>';
+
+
+
 
                     $pdo = null;
 
                     ?>
-                    <input type="button" value="Ajouter" onclick="ajoutmission(document.getElementById('rowText').value);" />
+                    
+                    
+                    
                     
 
                    
 
                 
                 </div>
-            </a>`)
+
+                
+
+            </a>
+            
+            `)
 
             marqueur.addTo(mymap)
+
+        }
+
+
+
+        function ajoutmission(value) {
+            console.log(value);
+            var p1 = value;
+            console.log(p1);
+
+            document.cookie = "mission=p1";
+
+
 
         }
 
@@ -709,8 +807,9 @@ session_start();
 
 
 
-    <script type="text/javascript">
 
+
+    <script type="text/javascript">
         ////////////////// Fonctions pour menus ///////////////////////////////////////////////
 
         function showmenu() {
@@ -743,6 +842,19 @@ session_start();
                 document.getElementById("menu2").style.visibility = 'hidden';
         }
 
+        function showmenu3() {
+            if (document.getElementById)
+                document.getElementById("menuinfo").style.visibility = 'visible';
+        }
+
+        function closemenu3() {
+            if (document.getElementById)
+                document.getElementById("menuinfo").style.visibility = 'hidden';
+        }
+
+
+        i = 0;
+
         /*idée : menu click souris
                  mission assigné aux camions : envoyé sms à un 06
                  06 03 21 46 96
@@ -751,7 +863,107 @@ session_start();
                     Finir menu fiche*/
     </script>
 
+    <div class="menufiche" id="menu2">
+        <?php
+        include "download.php";
+        $db = new PDO('mysql:host=localhost;dbname=projetfrap', 'root', '');
+        $stmt = $db->prepare("select * from residences");
+        $stmt->execute();
+        //
 
+        while ($row = $stmt->fetch()) {
+        ?>
+            <tr>
+                <td><a href="download.php?id=<?php echo $row['id'] ?>"><?php echo $row['nom'] ?></br></br><?php echo rand(5, 15); ?> km</a>
+                    <script>
+                        function distance(fichelat, fichelon) {
+                            
+                            var lat = 48.0658;
+                            var lon = 2.2356;
+
+                            var tabd = [];
+
+
+
+
+
+
+
+
+                            var R = 6371; // Radius of the earth in km
+                            var dLat = deg2rad(fichelat - lat); // deg2rad below
+                            var dLon = deg2rad(fichelon - lon);
+                            var a =
+                                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                                Math.cos(deg2rad(fichelat)) * Math.cos(deg2rad(lat)) *
+                                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                            tabd[i] = R * c; // Distance in km
+                            //console.log(tabd[i]);
+
+                            
+
+
+
+                            return tabd[i];
+
+                        }
+
+
+                        function deg2rad(deg) {
+                            return deg * (Math.PI / 180)
+                        }
+
+                        function markerfiche(fichelat, fichelon) {
+                            let posfiche = [fichelat, fichelon];
+                            var greenIcon = L.icon({
+                                iconUrl: 'images/icons/EPAS.png',
+                                //shadowUrl: 'images/tv.png',
+
+                                iconSize: [38, 95], // size of the icon
+                                shadowSize: [50, 64], // size of the shadow
+                                iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+                                shadowAnchor: [4, 62], // the same for the shadow
+                                popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+                            });
+
+                            // On rend le marqueur déplaçable
+                            marqueur = L.marker(posfiche, {
+                                draggable: false,
+                                icon: greenIcon
+                            })
+
+                            marqueur.addTo(mymap)
+                        }
+
+
+
+                        var fichelat = <?php echo $row['latitude'] ?>;
+                        var fichelon = <?php echo $row['longitude'] ?>;
+                        /*let posfiche = [fichelat, fichelon];
+                        addMarkerfiche(posfiche);*/
+
+
+                        d = [];
+                        d[i] = distance(fichelat, fichelon);
+                        console.log(d[i]);
+                        i = i + 1;
+                    </script>
+
+
+
+                </td>
+            </tr>
+        <?php
+        }
+        ?>
+
+
+
+        <div class="share-button">
+            <button onClick="closemenu2();return(false)">Fermer</button>
+        </div>
+    </div>
 
 </body>
 

@@ -37,44 +37,120 @@ body {
     border: 0;
 }
 
-.menuhydrant {
+.info{
     display: flex;
     justify-content: space-around;
     flex-direction: column;
+    
     align-items: center;
     visibility: hidden;
-
-    background-color: antiquewhite;
-
     position: absolute;
 
-    top: 20%;
-    left: 80%;
+    top: 3%;
+    left: 79%;
     width: 19%;
-    height: 60%;
+    height: 12%;
 
-    border: 5px;
-    border-style: solid;
-    border-color: black;
+    
 
     overflow: none;
-    background: #2e9ff5;
+    background: #22223b;
 
     z-index: 6;
 
+    border-radius: 20px;
+    padding :10px;
+}
+
+.info a{
+    color: #97a7b3;
+    font-size: 16px;
+}
+
+.menuhydrant {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    
+    align-items: center;
+    visibility: hidden;
+
+    
+    
+    position: absolute;
+
+    top: 18%;
+    left: 79%;
+    width: 19%;
+    height: 60%;
+
+    
+
+    overflow: none;
+    background: #22223b;
+
+    z-index: 6;
+
+    border-radius: 20px;
+    padding :3px;
+    
+}
+
+.menuhydrant c{
+    display: flex;
+    justify-content: space-between;
+    
+    border-style: solid;
+    border-color: #22223b;
+    height: 80%;
+    width: 100%;
+    margin:10px;
+
+    background : #97a7b3;
+    border-radius: 35px;
+}
+
+
+.menuhydrant b{
+    
+    display: flex;
+    flex-direction: column;
+    height: 96%;
+    width: 51%;
+   
+    
+    justify-content: space-around;
+    padding: 5px;
+    align-items: center;
+    
+
+}
+
+.menuhydrant x {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:10px;
+    font-size: 28px;
+    color:#97a7b3;
+    text-shadow: 5px;
 }
 
 .menuhydrant a {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px;
     width: 60%;
-    height: 20%;
+    height: 10%;
     display: table-cell;
     vertical-align: center;
     text-align: center;
     border: 5px;
     border-style: solid;
+    border-radius:50px ;
+    border-color: #22223b;
+    color:#22223b;
    
 }
 
@@ -88,12 +164,12 @@ body {
     position: absolute;
 
     top: 0px;
-    left: 14%;
-    width: 86%;
+    left: 12%;
+    width: 88%;
     height: 14%;
 
     overflow: none;
-    background: #7738eb;
+    
 
     z-index: 6;
 
@@ -104,23 +180,30 @@ body {
     justify-content: center;
     align-items: center;
     width: 20%;
-    height: 60%;
+    height: 80%;
     display: table-cell;
     vertical-align: middle;
     text-align: center;
     border: 5px;
     border-style: solid;
+    border-color : #22223b;
+    background-color: #97A7B3;
+    border-radius: 15px;
 }
 
+
+
 .menucamion img {
-    max-width: 100%;
-    max-height: 100%;
+    padding:8%;
+    max-width: 65%;
+    max-height: 65%;
     border: 0;
 }
 
 
+
 .share-button {
-    width: 80px;
+    width: 50px;
     height: 80px;
     background: #dfe6e9;
     border-radius: 40px;
@@ -132,6 +215,7 @@ body {
     position: relative;
     cursor: pointer;
     transition: .01s linear;
+    
 }
 
 .share-button:hover {
@@ -142,8 +226,9 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: #2d3436;
-    color: #f1f1f1;
+    background: #f0a868;
+    color: #22223b;
+    
     text-align: center;
     line-height: 80px;
     z-index: 999;
@@ -159,31 +244,45 @@ body {
     align-items: center;
 
     height: 100%;
-    width: 14%;
+    width: 12%;
 
     position: absolute;
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #E57B4A;
+    background-color: #22223B;
     overflow-x: hidden;
 }
 
 .sidenav a {
-    padding: 50%;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     display: flex;
 
     text-decoration: none;
     font-size: 28px;
-    color: #111;
+    color: #97A7B3;
     width: 94%;
-    height: 15%;
-    text-align: center;
-    border: solid;
+    height: 33%;
+    text-align:center;
+    border-top: solid;
+    border-bottom: solid;
     border-color: black;
     align-self: center;
 
+}
+
+.sidenav img {
+    max-width: 42%;
+    max-height: 42%;
+    border: 0;
+    filter: invert(100%); 
+    -webkit-filter:invert(100%); 
+    
 }
 
 
@@ -211,19 +310,20 @@ body {
 
     position: absolute;
 
-    top: 86%;
-    left: 14%;
-    width: 86%;
-    height: 14%;
+    top: 84%;
+    left: 12%;
+    width: 88%;
+    height: 16%;
 
     overflow: none;
     
 
     z-index: 6;
 
-    background-color: #333;
+    background-color: #22223b;
     overflow: auto;
-    white-space: nowrap;
+    
+    
 
 }
 
@@ -242,10 +342,14 @@ body {
     margin:10px;
 
     
-    color: white;
+    color: #97A7B3;
     text-align: center;
     
     text-decoration: none;
+}
+
+.menufiche a:hover{
+    color:#f1f1f1;
 }
 
 

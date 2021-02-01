@@ -43,7 +43,7 @@
 					</span>
 				</div>
 
-				<form class="login100-form validate-form" method="POST" action="login.php">
+				<form class="login100-form validate-form" method="POST" action="login.php" >
 					<div class="wrap-input100 validate-input m-b-26" data-validate="Id est necessaire">
 						<span class="label-input100">Numéro</span>
 						<input class="input100" type="text" name="num" placeholder="Entrer l'ID">
@@ -56,6 +56,8 @@
 						<span class="focus-input100"></span>
 					</div>
 
+					<div id="toto"></div>
+
 					
 
 						<div class="container-login100-form-btn">
@@ -65,6 +67,7 @@
 						</div>
 
 				</form>
+				
 
 				<div class="container-login101-form-btn">
 						<button class="login101-form-btn" name="submit" onclick="location.href=('admin.php')">

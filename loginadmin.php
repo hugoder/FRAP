@@ -27,13 +27,16 @@ if (isset($_POST['submit']))
         }
         else
         {
-            echo "Mauvais MDP";         
+            echo "<script>alert(\"Mauvais MDP\")</script>";
+            header("Location:admin.php");        
             
         }
     }
     else
     {
-        echo "Vous n'etes pas admin, veuillez en référer avec votre supérieur";
+        echo "<script>alert(\"Vous n'etes pas admin, veuillez en référer avec votre supérieur\")</script>";
+        
+        header("Location:admin.php"); 
     }
 }
 

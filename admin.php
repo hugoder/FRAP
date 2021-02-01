@@ -35,8 +35,9 @@
 
 	if (isset($_SESSION['mail']))
 	{
-		echo "Bienvenue, vous êtes connecté avec : " . $_SESSION["mail"];	
+			
 		?>
+		<div class = "connec">Bienvenue, vous êtes connecté avec : <?php echo $_SESSION["mail"] ?></div>
 		<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
@@ -51,15 +52,21 @@
 							</button>
 						</div>
 
-						<div class="container-login101-form-btn">
+						<!--<div class="container-login101-form-btn">
 							<button class="login101-form-btn" name="submit" onclick="location.href=('suppr.php')">
 								Supprimer une intervention
 							</button>
-						</div>
+						</div>-->
 
 						<div class="container-login101-form-btn">
 							<button class="login100-form-btn" name="submit" onclick="location.href=('index.php')">
 								Retour
+							</button>
+						</div>
+
+						<div class="container-login101-form-btn">
+							<button class="login101-form-btn" name="submit" onclick="location.href=('deco.php')">
+								Se déconnecter
 							</button>
 						</div>
 
@@ -101,6 +108,12 @@
 						<div class="container-login100-form-btn">
 							<button class="login100-form-btn" name="submit">
 								Connexion
+							</button>
+						</div>
+
+						<div class="container-login100-form-btn">
+							<button class="login100-form-btn" name="submit" onclick="location.href=('index.php')">
+								Retour
 							</button>
 						</div>
 
